@@ -1,0 +1,224 @@
+a
+{
+    color: #FF8000;
+    text-decoration: underline;
+}
+
+a img
+{
+    border: none;
+}
+
+a:hover,
+a:visited:hover
+{
+    color: #FFB366;
+}
+
+a:visited
+{
+    color: #994D00;
+}
+
+h1
+{
+    text-shadow: rgba(0, 0, 0, 0.7) -0.2ex 0.2ex 0.1ex;
+}
+
+h1, h2, h3
+{
+    font-family: Georgia, Times, "Times New Roman", serif;
+}
+
+h2
+{
+    text-shadow: rgba(0, 0, 0, 0.2) -0.2ex 0.2ex 0.1ex;
+}
+
+html
+{
+    background: #9999FF;
+}
+
+#content,
+#footer
+{
+    background: white;
+    border: 0.3ex solid #8A8AFF;
+}
+
+#content
+{
+    color: black;
+}
+
+#footer
+{
+    color: #737373;
+    font-size: small;
+}
+
+#footer hr
+{
+    border: none;
+    border-top: 0.4ex solid #CCCCFF;
+}
+
+#login
+{
+    font-size: x-small;
+}
+
+#login > li > label
+{
+    color: #CCCCFF;
+    font-size: x-small;
+}
+
+#login .login-info
+{
+    font-size: small;
+}
+
+#main-nav a
+{
+    color: white;
+}
+
+#main-nav a::before
+{
+    background: #FF8000;
+}
+
+#main-nav a:hover::before
+{
+    background: #FFB366;
+}
+
+#search button
+{
+    -moz-border-radius: 0.75em;
+    -webkit-border-radius: 0.75em;
+    -moz-background-size: auto 100%;
+    -webkit-background-size: auto 100%;
+    background-color: #9999FF;
+    background-image: url(/assets/img/search_icon.png);
+    background-repeat: no-repeat;
+    border: none;
+    color: transparent;
+}
+
+#search button:active
+{
+    background-color: #FFBF80 !important;
+    border: none;
+}
+
+#search button:hover
+{
+    background-color: #FFA64D;
+}
+
+#search input
+{
+    -moz-border-radius: 1em;
+    -webkit-border-radius: 1em;
+    background: #E6E6FF;
+    border: 0.3ex solid;
+    border-top-color: #000066;
+    border-right-color: #F0F0FF;
+    border-bottom-color: #F0F0FF;
+    border-left-color: #000066;
+}
+
+#toolbar
+{
+    background: #000066;
+    border-bottom: 0.6ex solid #7575FF;
+    color: white;
+    font-family: Georgia, Times, "Times New Roman", serif;
+}
+
+#toolbar a
+{
+    color: white;
+    text-decoration: none;
+}
+
+#toolbar a:hover
+{
+    color: #FFB366;
+}
+
+#toolbar button,
+#toolbar input
+{
+    -moz-border-radius: 0.7ex;
+    -webkit-border-radius: 0.7ex;
+    background: #000099;
+    border: 0.2ex solid #0000CC;
+    color: white;
+}
+
+#toolbar button,
+#toolbar input[type ~= button],
+#toolbar input[type ~= submit]
+{
+    color: #FF8000;
+}
+
+#toolbar button:hover,
+#toolbar input[type ~= button]:hover,
+#toolbar input[type ~= submit]:hover
+{
+    color: #FFB366;
+}
+
+.byline
+{
+    color: #999999;
+    font-size: x-small;
+    font-style: italic;
+    font-weight: normal;
+}
+
+.byline .user::before
+{
+    font-size: 4em;
+}
+
+.menu .title
+{
+    font-weight: bold;
+}
+
+.menu .title .cost
+{
+    font-weight: normal;
+}
+
+.menu .ingrediants
+{
+    font-style: italic;
+}
+
+.special
+{
+    color: #000099;
+    font-weight: bold;
+    text-shadow: rgba(0, 0, 0, 0.4) -0.1ex 0.1ex 0.1ex;
+}
+
+.user::before
+{
+    -moz-background-size: auto 100%;
+    -webkit-background-size: auto 100%;
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+}
+
+.user-chris::before
+{
+    background-image: url(/app/avatar.php?name=chris);
+}
+
