@@ -1,0 +1,213 @@
+body
+{
+    margin: 0;
+}
+
+h3
+{
+    margin-bottom: 1em;
+}
+
+#badges
+{
+    float: right;
+}
+
+#content,
+#footer
+{
+    margin: 1ex 10%;
+    min-width: 800px;
+    padding: 1em;
+}
+
+#content > h2:first-of-type
+{
+    margin-top: 0 !important;
+}
+
+#content #welcome
+{
+    margin-bottom: 3em;
+}
+
+#content .article + .article
+{
+    margin-top: 3em;
+}
+
+#footer hr
+{
+    margin: 2em auto;
+    width: 65%;
+}
+
+#footer p
+{
+    margin: 0;
+}
+
+#login
+{
+    float: right;
+    margin: 1em 0 0 0;
+    padding: 0;
+}
+
+#login button,
+#login input
+{
+    display: inline-block;
+}
+
+#login button,
+#login input[type ~= button],
+#login input[type ~= submit]
+{
+    padding: 0.2ex 1ex;
+}
+
+#login input[type ~= password],
+#login input[type ~= text]
+{
+    padding: 0.2ex 0.5ex;
+    width: 20ex;
+}
+
+#login label
+{
+    padding: 0 0 0 0.5ex;
+    display: block;
+}
+
+#login li
+{
+    display: inline-block;
+    margin: 0 0 0 1ex;
+}
+
+#logo
+{
+    float: left;
+    height: 5em;
+    margin-left: -3em;
+    margin-right: 1em;
+}
+
+#main-nav
+{
+    margin: 0;
+    padding: 0;
+}
+
+#main-nav a
+{
+}
+
+#main-nav a::before
+{
+    /* I should be able to use "\A0" here, but there seems to be a bug in FF */
+    content: "";
+    display: inline-block;
+    height: 0.5em;
+    margin: 0 0.5ex 0 0;
+    width: 1ex;
+}
+
+#main-nav > li
+{
+    display: inline;
+    margin: 0 2ex 0 0;
+}
+
+#search
+{
+    float: right;
+    margin-top: 1em;
+    padding-bottom: 1em;
+    padding-left: 2ex;
+}
+
+#search button
+{
+    bottom: 0.05ex;
+    height: 1.5em;
+    position: relative;
+    right: 0.6ex;
+    width: 1.5em;
+}
+
+#search button::-moz-focus-inner
+{
+    padding: 0;
+    border: none
+}
+
+#search input
+{
+    left: 1.5em;
+    padding: 0.2em 2em 0.2em 0.5em;
+    position: relative;
+    width: 30ex;
+}
+
+#toolbar
+{
+    min-width: 800px;
+    padding: 0.5em 10%;
+}
+
+#toolbar button::-moz-focus-inner
+{
+    padding: 0;
+    border: none
+}
+
+#toolbar > h1
+{
+    margin: 0.4em 0;
+}
+
+#toolbar > *:last-child::after
+{
+    clear: both;
+    content: "";
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+
+.byline
+{
+    margin-left: 2ex;
+}
+
+.byline .user::before
+{
+    float: left;
+    margin-right: 0.4ex;
+}
+
+.menu
+{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu li
+{
+    margin: 0 0 1em 0;
+    padding: 0;
+}
+
+.user::before
+{
+    content: "\20";
+    display: inline-block;
+    height: 1em;
+    margin-right: 0.4ex;
+    vertical-align: bottom;
+    width: 1em;
+}
+
