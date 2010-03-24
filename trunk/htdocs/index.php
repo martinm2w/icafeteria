@@ -60,7 +60,15 @@ while (($row = mysql_fetch_assoc($results)) !== FALSE) {
             echo "<span class=\"add-to-cart\"><a href=\"/manage/add_cart.php?item_id=$row[item_id]\">[add to cart]</a></span>";
         }
     }
+	
 
+    // sold out
+    if($row['sold_out'] != 0) {
+    	echo "  (!! Sold Out !!)";
+    }
+    //
+    
+    
     echo "</div>";
 
     echo '<div class="ingrediants">';
