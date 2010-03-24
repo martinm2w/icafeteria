@@ -1,4 +1,4 @@
-USE icafeteria_local;
+USE icafeteria;
 
 INSERT INTO user_types(user_type_name)
 SELECT 'Manager'
