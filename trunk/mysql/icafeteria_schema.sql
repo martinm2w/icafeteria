@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS icafeterial;
+CREATE DATABASE IF NOT EXISTS icafeteria;
 USE icafeteria;
 
 CREATE TABLE IF NOT EXISTS user_types (
