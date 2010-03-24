@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS icafeteria_local;
-USE icafeteria_local;
+CREATE DATABASE IF NOT EXISTS icafeterial;
+USE icafeteria;
 
 CREATE TABLE IF NOT EXISTS user_types (
     user_type_id INT AUTO_INCREMENT,
