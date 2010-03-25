@@ -192,9 +192,16 @@ html
     font-weight: bold;
 }
 
-.menu .title .cost
+.menu .title .cost,
+.menu .title .add-to-cart
 {
     font-weight: normal;
+}
+
+.menu .title .add-to-cart
+{
+    color: #999999;
+    font-style: italic;
 }
 
 .menu .ingrediants

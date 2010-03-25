@@ -193,12 +193,18 @@ h3
     list-style: none;
     margin: 0;
     padding: 0;
+    text-align: center;
 }
 
 .menu li
 {
     margin: 0 0 1em 0;
     padding: 0;
+}
+
+.menu .title .add-to-cart
+{
+    margin-left: 1ex;
 }
 
 .user::before

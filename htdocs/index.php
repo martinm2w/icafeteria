@@ -34,7 +34,9 @@ SELECT items.*,
                         USING (ingred_id)
                GROUP BY items.item_id
              ) AS all_ingreds
-       USING (item_id);
+       USING (item_id)
+ ORDER
+    BY item_type_id
 SQL
     , $db)
     or die('Select failed: ' . mysql_error());
@@ -44,31 +46,38 @@ while (($row = mysql_fetch_assoc($results)) !== FALSE) {
     $cost = money_format('$%n', $row['cost']);
 
     if ($row['item_type_id'] != $prev_item_type_id) {
-        echo "<li><h3>$row[item_type_name]</h3></li>";
+        echo "<li><h2>$row[item_type_name]</h2></li>";
         $prev_item_type_id = $row['item_type_id'];
     }
 
     echo '<li>';
     echo "<div class=\"title\">$row[item_name] <span class=\"cost\">&mdash; $cost</span>";
 
-    if(isset($_SESSION['username'])) {
-        $user_result = mysql_query("SELECT * FROM users WHERE username='$_SESSION[username]'", $db)
+    if(isset($_SESSION['user_id'])) {
+        $user_result = mysql_query("SELECT * FROM users WHERE user_id=$_SESSION[user_id]", $db)
             or die('Select failed: ' . mysql_error());
         $user_row = mysql_fetch_assoc($user_result);
 
         if ($user_row['user_type_id'] == 2 || $user_row['user_type_id'] == 3) {
-            echo "<span class=\"add-to-cart\"><a href=\"/manage/add_cart.php?item_id=$row[item_id]\">[add to cart]</a></span>";
+            echo '<span class="add-to-cart">';
+
+            if ($row['sold_out']) {
+                echo '<span class="sold-out">Sold out</span>';
+            }
+            else {
+                echo "<a href=\"/manage/add_cart.php?item_id=$row[item_id]\">[add to cart]</a>";
+            }
+
+            echo '</span>';
         }
     }
-	
 
     // sold out
-    if($row['sold_out'] != 0) {
-    	echo "  (!! Sold Out !!)";
-    }
+    // if($row['sold_out'] != 0) {
+            // echo "  (!! Sold Out !!)";
+    // }
     //
-    
-    
+
     echo "</div>";
 
     echo '<div class="ingrediants">';
