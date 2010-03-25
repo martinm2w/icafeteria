@@ -63,6 +63,22 @@ SQL
         or die('Delete failed: ' . mysql_error());
     echo "<p>An item was removed from your cart.</p>";
     break;
+
+case 'empty':
+    mysql_query("DELETE orders_items_ingreds.* FROM orders_items_ingreds JOIN orders USING (order_id) WHERE user_id = $_SESSION[user_id]", $db)
+        or die('Delete failed: ' . mysql_error());
+    mysql_query("DELETE orders_items.* FROM orders_items JOIN orders USING (order_id) WHERE user_id = $_SESSION[user_id]", $db)
+        or die('Delete failed: ' . mysql_error());
+    echo "<p>Your cart has been emptied.</p>";
+    break;
+
+case 'checkout':
+    mysql_query("DELETE orders_items_ingreds.* FROM orders_items_ingreds JOIN orders USING (order_id) WHERE user_id = $_SESSION[user_id]", $db)
+        or die('Delete failed: ' . mysql_error());
+    mysql_query("DELETE orders_items.* FROM orders_items JOIN orders USING (order_id) WHERE user_id = $_SESSION[user_id]", $db)
+        or die('Delete failed: ' . mysql_error());
+    echo "<p>This would have led to the check-out screen.</p>";
+    break;
 }
 ?>
 
@@ -70,12 +86,16 @@ SQL
     <p>Welcome to <span class="special">iCafeteria</span>.</p>
 </div>
 
+<h2>Manage Your Cart</h2>
+
 <ul class="menu">
 <?php
 $total_results = mysql_query(<<<SQL
 SELECT order_id,
        order_calories.total_calories,
-       SUM(count * cost) AS total_cost,
+       SUM(count * cost) AS subtotal_cost,
+       SUM(count * cost) * 0.08 AS total_tax,
+       SUM(count * cost) * 1.08 AS total_cost_with_tax,
        MAX(prep_time) AS min_prep_time,
        SUM(count * prep_time) AS max_prep_time
   FROM       ( SELECT order_id,
@@ -151,14 +171,25 @@ if (!mysql_num_rows($results)) {
     echo '<p>You have no items in your cart. <a href="/">Why not add some</a>?</p>';
 }
 else {
+    $total_row = mysql_fetch_assoc($total_results);
+    $prep_time = $total_row['min_prep_time'];
+
+    if ($min_prep_time != $max_prep_time) {
+        $prep_time .= "&mdash;$total_row[max_prep_time]";
+    }
+
+    echo "<h3>Estimated prep-time: $prep_time minutes</h3>";
+    echo "<h3>Total calories: $total_row[total_calories] cal</h3>";
+    echo '<p>&nbsp;</p>';
+
     while (($row = mysql_fetch_assoc($results)) !== FALSE) {
         $cost = money_format('$%n', $row['cost']);
 
         echo '<li>';
-        echo '<form action="/manage/cart.php" method="POST"><input type="hidden" name="action" value="delete">';
+        echo '<form action="/manage/cart.php" method="POST">';
         echo "<input type=\"hidden\" name=\"order_id\" value=\"$row[order_id]\">";
         echo "<input type=\"hidden\" name=\"item_id\" value=\"$row[item_id]\">";
-        echo "<div class=\"title\">$row[count]x $row[item_name] <span class=\"cost\">@ $cost each <input type=\"submit\" value=\"delete\"></span></div></form>";
+        echo "<div class=\"title\">$row[count]x $row[item_name] <span class=\"cost\">@ $cost each <button type=\"submit\" name=\"action\" value=\"delete\">delete</button></span></div></form>";
 
         echo '<div class="ingrediants">';
 
@@ -188,6 +219,17 @@ else {
         echo "<div class=\"calories\">$row[calories] cal</div>";
         echo '</li>';
     }
+
+    $subtotal_cost = money_format('$%n', $total_row['subtotal_cost']);
+    $total_tax = money_format('$%n', $total_row['total_tax']);
+    $total_cost_with_tax = money_format('$%n', $total_row['total_cost_with_tax']);
+
+    echo '<p>&nbsp;</p>';
+    echo "<p>Subtotal: $subtotal_cost</p>";
+    echo "<p>Tax (8.00%): $total_tax</p>";
+    echo "<h3>Total: $total_cost_with_tax</h3>";
+    echo '';
+    echo '<p><form action="/manage/cart.php" method="POST"><button type="submit" name="action" value="empty">Empty cart</button><button type="submit" name="action" value="checkout">Checkout</button></form></p>';
 }
 ?>
 

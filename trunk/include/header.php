@@ -11,7 +11,7 @@ else {
 
 $login_failed = false;
 
-switch ($_GET['action']) {
+switch ($_POST['action']) {
 case 'login':
     $login_failed = true;
     $user_result = mysql_query("SELECT user_id FROM users WHERE username='$_POST[username]' AND password='$_POST[password]'", $db)
@@ -21,16 +21,12 @@ case 'login':
         $login_failed = false;
         $user_row = mysql_fetch_assoc($user_result);
         $_SESSION['user_id'] = $user_row['user_id'];
-        $_SESSION['cart'] = array();
     }
 
-    header("Location: http://$_SERVER[HTTP_HOST]/");
     break;
 
 case 'logout':
     unset($_SESSION['user_id']);
-    unset($_SESSION['cart']);
-    header("Location: http://$_SERVER[HTTP_HOST]/");
     break;
 }
 ?>
@@ -46,7 +42,8 @@ case 'logout':
     <body>
         <div id="toolbar">
 <?php if(isset($_SESSION['user_id'])): ?>
-            <form action="/?action=logout" method="post">
+            <form action="/" method="POST">
+                <input type="hidden" name="action" value="logout">
                 <ul id="login">
                     <li class="login-info">
 <?php
@@ -63,7 +60,8 @@ echo "Logged in as $user_row[f_name] $user_row[l_name]";
                 </ul>
             </form>
 <?php else: ?>
-            <form action="/?action=login" method="post">
+            <form action="/" method="POST">
+                <input type="hidden" name="action" value="login">
                 <ul id="login">
                     <li>
                         <label for="username">Login Name:</label>
@@ -100,11 +98,29 @@ if(isset($_SESSION['user_id'])):
                 <li><a href="/manage/ingred.php">Manage Ingredients</a></li>
 <?php
     endif;
-    if ($user_row['user_type_id'] == 2 || $user_row['user_type_id'] == 3):
-?>
-                <li><a href="/manage/cart.php">Manage Cart</a></li>
-<?php
-    endif;
+    if ($user_row['user_type_id'] == 2 || $user_row['user_type_id'] == 3) {
+        // We may turn this back on later. Shows an item count next to "Manage 
+        // Cart".
+        /*
+        $cart_results = mysql_query(<<<SQL
+SELECT SUM(count) as count
+  FROM       orders
+        JOIN orders_items
+       USING (order_id);
+SQL
+            , $db)
+            or die ('Select failed: ' . mysql_error());
+
+        $cart_row = mysql_fetch_assoc($cart_results);
+        $count = '';
+
+        if (!is_null($cart_row['count'])) {
+            $count = " ($cart_row[count])";
+        }
+         */
+
+        echo "<li><a href=\"/manage/cart.php\">Manage Cart</a>$count</li>";
+    }
 endif;
 ?>
             </ul>
