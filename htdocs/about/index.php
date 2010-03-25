@@ -19,11 +19,13 @@ case 'add':
 
 <p>&nbsp;</p>
 
+<?php if (isset($_SESSION['user_id'])): ?>
 <p>We welcome constructive feedback from our users. Thank you for your suggestions.</p>
 <form action="/about/" method="POST">
     <textarea name="body" cols="50" rows="10"></textarea>
     <p><button type="submit" name="action" value="add">Submit feedback</button></p>
 </form>
+<?php endif; ?>
 
 <?php include('../../include/footer.php'); ?>
 
