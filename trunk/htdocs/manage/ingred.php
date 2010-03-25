@@ -5,7 +5,7 @@
 </div>
 
 <?php
-switch ($_GET['action']) {
+switch ($_POST['action']) {
 case 'add':
     // This is BAD!  We're not protecting against injection attacks.  We'll 
     // fix it later
@@ -14,8 +14,8 @@ INSERT
   INTO ingreds( description,
                 calories
               )
-VALUES ( '$_GET[description]',
-         $_GET[calories]
+VALUES ( '$_POST[description]',
+         $_POST[calories]
        )
 SQL
         , $db)
@@ -26,7 +26,7 @@ SQL
 
 case 'delete':
     // This is also BAD!
-    mysql_query("delete from ingreds where ingred_id = $_GET[ingred_id]", $db)
+    mysql_query("delete from ingreds where ingred_id = $_POST[ingred_id]", $db)
         or die('Delete failed: ' . mysql_error());
     echo "<p>Your ingrediant was removed.</p>";
     break;
@@ -35,7 +35,7 @@ case 'delete':
 
 <h2>Add an Ingrediant</h2>
 <div style="text-align: center;">
-    <form action="/manage/ingred.php" method="GET">
+    <form action="/manage/ingred.php" method="POST">
         <input type="hidden" name="action" value="add">
         <p>Name: <input type="text" name="description" value=""></p>
         <p>Calories: <input style="width: 5em" type="text" name="calories" value="0"> cal</p>
@@ -51,7 +51,9 @@ $results = mysql_query('SELECT * FROM ingreds', $db)
 
 while (($row = mysql_fetch_assoc($results)) !== FALSE) {
     echo '<li>';
-    echo "<div class=\"title\">$row[description] <span class=\"cost\">&mdash; $cost <a href=\"/manage/ingred.php?action=delete&ingred_id=$row[ingred_id]\">[delete]</a></span></div>";
+    echo '<form action="/manage/ingred.php" method="POST"><input type="hidden" name="action" value="delete">';
+    echo "<input type=\"hidden\" name=\"ingred_id\" value=\"$row[ingred_id]\">";
+    echo "<div class=\"title\">$row[description] <span class=\"cost\">&mdash; $cost <input type=\"submit\" value=\"delete\"></span></div></form>";
 
     echo '<div class="ingrediants">';
 

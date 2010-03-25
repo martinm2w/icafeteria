@@ -6,9 +6,11 @@
 
 <h2>Add an Item to Your Cart</h2>
 
-<ul class="menu">
-    <li>
-
+<form action="/manage/cart.php" method="POST">
+    <input type="hidden" name="action" value="add">
+    <?php echo "<input type=\"hidden\" name=\"item_id\" value=\"$_GET[item_id]\">"; ?>
+    <ul class="menu">
+        <li>
 <?php
 $results = mysql_query(<<<SQL
 SELECT items.*,
@@ -36,7 +38,8 @@ SQL
 $row = mysql_fetch_assoc($results);
 $cost = money_format('$%n', $row['cost']);
 
-echo "<div class=\"title\">$row[item_name] <span class=\"cost\">&mdash; $cost</span></div>";
+echo '<div class="title"><input style="width: 5ex;" type="text" name="count" value="1"> ';
+echo "$row[item_name] <span class=\"cost\">&mdash; $cost</span></div>";
 
 echo '<div class="ingrediants">';
 
@@ -54,20 +57,18 @@ echo '</div>';
 $ingred_opt_result = mysql_query("SELECT ingred_id, description, calories FROM items_ingreds join ingreds using (ingred_id) WHERE items_ingreds.item_id = $row[item_id] AND items_ingreds.optional = TRUE", $db)
     or die ('Select failed'.mysql_error());
 
-echo "<form action=\"/manage/cart.php\" method=\"GET\">";
-echo '<input type="hidden" name="action" value="add">';
 echo '<p><div class="ingrediants">Optional Ingrediants:</div></p>';
 
 while (($ingred_opt_row = mysql_fetch_assoc($ingred_opt_result)) != FALSE) {
-    echo "<p><input type=\"checkbox\" name=\"ingred_id\" value=\"$ingred_opt_row[ingred_id]\"> $ingred_opt_row[description] ($ingred_opt_row[calories] cal)</p>";
+    echo "<p><input type=\"checkbox\" name=\"ingred_id[]\" value=\"$ingred_opt_row[ingred_id]\"> $ingred_opt_row[description] ($ingred_opt_row[calories] cal)</p>";
 }
 
 echo '<input type="submit" value="Add to Cart">';
-echo '</form>';
 ?>
 
-    </li>
-</ul>
+        </li>
+    </ul>
+</form>
 
 <?php include('../../include/footer.php'); ?>
 
