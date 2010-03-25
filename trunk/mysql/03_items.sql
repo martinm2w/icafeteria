@@ -1,3 +1,0 @@
-ALTER TABLE items
-CHANGE item_id item_id INT NOT NULL AUTO_INCREMENT;
-
