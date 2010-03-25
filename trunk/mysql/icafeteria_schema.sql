@@ -81,7 +81,6 @@ CREATE TABLE IF NOT EXISTS orders_items_ingreds (
 CREATE TABLE IF NOT EXISTS feedback (
     feedback_id INT NOT NULL AUTO_INCREMENT,
     body TEXT NOT NULL,
-    PRIMARY KEY (feedback_id),
-    FOREIGN KEY (user_id) REFERENCES users(user_id)
+    PRIMARY KEY (feedback_id)
 );
 
