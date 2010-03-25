@@ -58,17 +58,15 @@ while (($row = mysql_fetch_assoc($results)) !== FALSE) {
             or die('Select failed: ' . mysql_error());
         $user_row = mysql_fetch_assoc($user_result);
 
-        if ($user_row['user_type_id'] == 2 || $user_row['user_type_id'] == 3) {
-            echo '<span class="add-to-cart">';
-
-            if ($row['sold_out']) {
-                echo '<span class="sold-out">Sold out</span>';
-            }
-            else {
+        if ($row['sold_out']) {
+            echo '<span class="add-to-cart"><span class="sold-out">Sold out</span></span>';
+        }
+        else {
+            if ($user_row['user_type_id'] == 2 || $user_row['user_type_id'] == 3) {
+                echo '<span class="add-to-cart">'; 
                 echo "<a href=\"/manage/add_cart.php?item_id=$row[item_id]\">[add to cart]</a>";
+                echo '</span>';
             }
-
-            echo '</span>';
         }
     }
 

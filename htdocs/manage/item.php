@@ -55,6 +55,28 @@ case 'delete':
         or die('Delete failed: ' . mysql_error());
     echo "<p>Your item was removed from the menu.</p>";
     break;
+
+case 'sellout':
+    mysql_query(<<<SQL
+UPDATE items
+   SET sold_out = TRUE
+ WHERE item_id = $_POST[item_id]
+SQL
+        , $db)
+        or die('Update failed: ' . mysql_error());
+    echo "<p>Item modified.</p>";
+    break;
+
+case 'restock':
+    mysql_query(<<<SQL
+UPDATE items
+   SET sold_out = FALSE
+ WHERE item_id = $_POST[item_id]
+SQL
+        , $db)
+        or die('Update failed: ' . mysql_error());
+    echo "<p>Item modified.</p>";
+    break;
 }
 ?>
 
@@ -180,7 +202,17 @@ while (($row = mysql_fetch_assoc($results)) !== FALSE) {
     echo '<li>';
     echo '<form action="/manage/item.php" method="POST">';
     echo "<input type=\"hidden\" name=\"item_id\" value=\"$row[item_id]\">";
-    echo "<div class=\"title\">$row[item_name] <span class=\"cost\">&mdash; $cost <button type=\"submit\" name=\"action\" value=\"delete\">delete</button></span></div></form>";
+    echo "<div class=\"title\">$row[item_name] <span class=\"cost\">&mdash; $cost ";
+    echo "<button type=\"submit\" name=\"action\" value=\"delete\">delete</button>";
+
+    if ($row['sold_out']) {
+        echo "<button type=\"submit\" name=\"action\" value=\"restock\">restock</button>";
+    }
+    else {
+        echo "<button type=\"submit\" name=\"action\" value=\"sellout\">sell out</button>";
+    }
+
+    echo "</span></div></form>";
 
     echo '<div class="ingrediants">';
 
