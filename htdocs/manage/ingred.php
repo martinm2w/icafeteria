@@ -51,9 +51,9 @@ $results = mysql_query('SELECT * FROM ingreds', $db)
 
 while (($row = mysql_fetch_assoc($results)) !== FALSE) {
     echo '<li>';
-    echo '<form action="/manage/ingred.php" method="POST"><input type="hidden" name="action" value="delete">';
+    echo '<form action="/manage/ingred.php" method="POST">';
     echo "<input type=\"hidden\" name=\"ingred_id\" value=\"$row[ingred_id]\">";
-    echo "<div class=\"title\">$row[description] <span class=\"cost\">&mdash; $cost <input type=\"submit\" value=\"delete\"></span></div></form>";
+    echo "<div class=\"title\">$row[description] <span class=\"cost\">&mdash; $cost <button type=\"submit\" name=\"action\" value=\"delete\">delete</button></span></div></form>";
 
     echo '<div class="ingrediants">';
 

@@ -7,7 +7,6 @@
 <h2>Add an Item to Your Cart</h2>
 
 <form action="/manage/cart.php" method="POST">
-    <input type="hidden" name="action" value="add">
     <?php echo "<input type=\"hidden\" name=\"item_id\" value=\"$_GET[item_id]\">"; ?>
     <ul class="menu">
         <li>
@@ -63,7 +62,7 @@ while (($ingred_opt_row = mysql_fetch_assoc($ingred_opt_result)) != FALSE) {
     echo "<p><input type=\"checkbox\" name=\"ingred_id[]\" value=\"$ingred_opt_row[ingred_id]\"> $ingred_opt_row[description] ($ingred_opt_row[calories] cal)</p>";
 }
 
-echo '<input type="submit" value="Add to Cart">';
+echo '<button type="submit" name="action" value="add">Add to Cart</button>';
 ?>
 
         </li>

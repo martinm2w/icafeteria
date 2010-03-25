@@ -178,9 +178,9 @@ while (($row = mysql_fetch_assoc($results)) !== FALSE) {
     }
 
     echo '<li>';
-    echo '<form action="/manage/item.php" method="POST"><input type="hidden" name="action" value="delete">';
+    echo '<form action="/manage/item.php" method="POST">';
     echo "<input type=\"hidden\" name=\"item_id\" value=\"$row[item_id]\">";
-    echo "<div class=\"title\">$row[item_name] <span class=\"cost\">&mdash; $cost <input type=\"submit\" value=\"delete\"></span></div></form>";
+    echo "<div class=\"title\">$row[item_name] <span class=\"cost\">&mdash; $cost <button type=\"submit\" name=\"action\" value=\"delete\"></span></div></form>";
 
     echo '<div class="ingrediants">';
 
