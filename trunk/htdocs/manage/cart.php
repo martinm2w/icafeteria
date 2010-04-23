@@ -174,7 +174,7 @@ else {
     $total_row = mysql_fetch_assoc($total_results);
     $prep_time = $total_row['min_prep_time'];
 
-    if ($min_prep_time != $max_prep_time) {
+    if ($total_row['min_prep_time'] != $total_row['max_prep_time']) {
         $prep_time .= "&mdash;$total_row[max_prep_time]";
     }
 
