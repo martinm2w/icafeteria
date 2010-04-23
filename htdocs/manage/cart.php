@@ -167,10 +167,10 @@ SQL
     , $db)
     or die('Select failed: ' . mysql_error());
 
-// if (!mysql_num_rows($results)) {
-    // echo '<p>You have no items in your cart. <a href="/">Why not add some</a>?</p>';
-// }
-// else {
+if (!mysql_num_rows($results)) {
+    echo '<p>You have no items in your cart. <a href="/">Why not add some</a>?</p>';
+}
+else {
     $total_row = mysql_fetch_assoc($total_results);
     $prep_time = $total_row['min_prep_time'];
 
@@ -230,7 +230,7 @@ SQL
     echo "<h3>Total: $total_cost_with_tax</h3>";
     echo '';
     echo '<p><form action="/manage/cart.php" method="POST"><button type="submit" name="action" value="empty">Empty cart</button><button type="submit" name="action" value="checkout">Checkout</button></form></p>';
-// }
+}
 ?>
 
 <?php include('../../include/footer.php'); ?>
