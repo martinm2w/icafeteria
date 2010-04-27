@@ -121,6 +121,12 @@ SQL
 
         echo "<li><a href=\"/manage/cart.php\">Manage Cart</a>$count</li>";
     }
+
+    if ($user_row['user_type_id'] == 4):
+?>
+                <li><a href="/manage/prepare.php">Prepare Orders</a></li>
+<?php
+    endif;
 endif;
 ?>
             </ul>
