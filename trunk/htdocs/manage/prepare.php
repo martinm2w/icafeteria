@@ -12,6 +12,17 @@ SQL
         or die('Update failed: ' . mysql_error());
     echo "<p>An order was completed.</p>";
     break;
+    
+case 'sellout':
+    mysql_query(<<<SQL
+UPDATE items
+   SET sold_out = TRUE
+ WHERE item_id = $_POST[item_id]
+SQL
+        , $db)
+        or die('Update failed: ' . mysql_error());
+    echo "<p>Item modified.</p>";
+    break;
 }
 ?>
 
@@ -79,7 +90,16 @@ else {
 
         $ingred_opt_result = mysql_query("SELECT description FROM orders_items_ingreds JOIN ingreds USING (ingred_id) JOIN items_ingreds USING (item_id, ingred_id) WHERE orders_items_ingreds.item_id = $row[item_id] AND orders_items_ingreds.order_id = $row[order_id] AND optional = TRUE", $db)
             or die ('Select failed'.mysql_error());
-
+		
+		
+		if ($row['sold_out']) {
+	        echo "<button type=\"submit\" name=\"action\" value=\"restock\">restock</button>";
+	    }
+	    else {
+	        echo "<button type=\"submit\" name=\"action\" value=\"sellout\">sell out</button>";
+	    }
+		
+		
         echo '<p>Optional Ingrediants:</p>';
 
         if (mysql_num_rows($ingred_opt_result)) {
