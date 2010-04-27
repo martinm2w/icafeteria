@@ -20,6 +20,8 @@ UNION
 SELECT 1, 'hao', 'password', 'Hao', 'Shi'
 UNION
 SELECT 2, 'student', 'password', 'Test', 'Student'
+UNION
+SELECT 4, 'perparer', 'password', 'Test', 'Preparer'
 ;
 
 INSERT INTO item_types(item_type_name)
