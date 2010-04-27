@@ -167,6 +167,7 @@ SELECT order_id,
                             OR orders_items_ingreds.ingred_id IS NOT NULL
                           )
                       AND user_id = $_SESSION[user_id]
+                      AND NOT submitted
                 GROUP
                    BY order_id
              ) AS order_calories
@@ -186,7 +187,7 @@ SELECT order_id,
   FROM       ( SELECT order_id,
                       item_id,
                       SUM(count * calories) AS calories
-                 FROM        users
+                 FROM       users
                        JOIN orders
                       USING (user_id)
                        JOIN orders_items
