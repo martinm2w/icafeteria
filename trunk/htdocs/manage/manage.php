@@ -40,8 +40,7 @@ SELECT orders.order_id,
        USING (order_id)
         JOIN users
        USING (user_id)
- WHERE     completed
-       AND NOT paid
+ WHERE NOT paid
  ORDER
     BY order_time
 SQL
