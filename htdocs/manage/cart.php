@@ -5,17 +5,38 @@ switch ($_POST['action']) {
 case 'add':
     // This is BAD!  We're not protecting against injection attacks.  We'll 
     // fix it later
+    $open_order_results = mysql_query(<<<SQL
+SELECT order_id
+  FROM orders
+ WHERE user_id = $_SESSION[user_id]
+       AND NOT submitted
+SQL
+        , $db)
+        or die('Select failed: ' . mysql_error());
+
+    if (mysql_num_rows($open_order_results)) {
+        $open_order_row = mysql_fetch_assoc($open_order_results);
+        $open_order_id = $open_order_row['order_id'];
+    }
+    else {
+        $new_order_results = mysql_query(<<<SQL
+INSERT
+  INTO orders(user_id)
+VALUES ($_SESSION[user_id])
+SQL
+            , $db)
+            or die('Insert failed: ' . mysql_error());
+
+        $open_order_id = mysql_insert_id($db);
+    }
+
     mysql_query(<<<SQL
 INSERT
   INTO orders_items( item_id,
                      order_id,
                      count
                     )
-SELECT $_POST[item_id],
-       order_id,
-       $_POST[count]
-  FROM orders
- WHERE user_id = $_SESSION[user_id]
+VALUES ($_POST[item_id], $open_order_id, $_POST[count])
 SQL
         , $db)
         or die('Insert failed: ' . mysql_error());
@@ -28,11 +49,7 @@ INSERT
                              order_id,
                              ingred_id
                            )
-SELECT $_POST[item_id],
-       order_id,
-       $ingred_id
-  FROM orders
- WHERE user_id = $_SESSION[user_id]
+VALUES ($_POST[item_id], $open_order_id, $ingred_id)
 SQL
                 , $db)
                 or die('Insert failed: ' . mysql_error());
@@ -65,18 +82,51 @@ SQL
     break;
 
 case 'empty':
-    mysql_query("DELETE orders_items_ingreds.* FROM orders_items_ingreds JOIN orders USING (order_id) WHERE user_id = $_SESSION[user_id]", $db)
+    $open_order_results = mysql_query(<<<SQL
+SELECT order_id
+  FROM orders
+ WHERE user_id = $_SESSION[user_id]
+       AND NOT submitted
+SQL
+        , $db)
+        or die('Select failed: ' . mysql_error());
+
+    $open_order_row = mysql_fetch_assoc($open_order_results);
+    $open_order_id = $open_order_row['order_id'];
+
+    mysql_query("DELETE FROM orders_items_ingreds WHERE order_id = $open_order_id", $db)
         or die('Delete failed: ' . mysql_error());
-    mysql_query("DELETE orders_items.* FROM orders_items JOIN orders USING (order_id) WHERE user_id = $_SESSION[user_id]", $db)
+    mysql_query("DELETE FROM orders_items WHERE order_id = $open_order_id", $db)
         or die('Delete failed: ' . mysql_error());
     echo "<p>Your cart has been emptied.</p>";
     break;
 
 case 'checkout':
+    /*
     mysql_query("DELETE orders_items_ingreds.* FROM orders_items_ingreds JOIN orders USING (order_id) WHERE user_id = $_SESSION[user_id]", $db)
         or die('Delete failed: ' . mysql_error());
     mysql_query("DELETE orders_items.* FROM orders_items JOIN orders USING (order_id) WHERE user_id = $_SESSION[user_id]", $db)
         or die('Delete failed: ' . mysql_error());
+     */
+    $open_order_results = mysql_query(<<<SQL
+SELECT order_id
+  FROM orders
+ WHERE user_id = $_SESSION[user_id]
+       AND NOT submitted
+SQL
+        , $db)
+        or die('Select failed: ' . mysql_error());
+
+    $open_order_row = mysql_fetch_assoc($open_order_results);
+    $open_order_id = $open_order_row['order_id'];
+
+    mysql_query(<<<SQL
+UPDATE orders
+   SET submitted = TRUE
+ WHERE order_id = $open_order_id
+SQL
+        , $db)
+        or die('Update failed: ' . mysql_error());
     echo "<p>This would have led to the check-out screen.</p>";
     break;
 }
@@ -154,6 +204,7 @@ SELECT order_id,
                             OR orders_items_ingreds.ingred_id IS NOT NULL
                           )
                       AND user_id = $_SESSION[user_id]
+                      AND NOT submitted
                 GROUP
                    BY item_id
              ) AS items_calories
