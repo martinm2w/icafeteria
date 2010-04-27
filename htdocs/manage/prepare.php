@@ -92,12 +92,14 @@ else {
             or die ('Select failed'.mysql_error());
 		
 		
+        /*
 		if ($row['sold_out']) {
 	        echo "<button type=\"submit\" name=\"action\" value=\"restock\">restock</button>";
 	    }
 	    else {
 	        echo "<button type=\"submit\" name=\"action\" value=\"sellout\">sell out</button>";
 	    }
+         */
 		
 		
         echo '<p>Optional Ingrediants:</p>';
