@@ -96,6 +96,7 @@ if(isset($_SESSION['user_id'])):
 ?>
                 <li><a href="/manage/item.php">Manage Menu Items</a></li>
                 <li><a href="/manage/ingred.php">Manage Ingredients</a></li>
+                <li><a href="/manage/manage.php">Manage Orders</a></li>
 <?php
     endif;
     if ($user_row['user_type_id'] == 2 || $user_row['user_type_id'] == 3) {
