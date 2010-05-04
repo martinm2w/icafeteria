@@ -105,12 +105,6 @@ while (($row = mysql_fetch_assoc($results)) !== FALSE) {
         }
     }
 
-    // sold out
-    // if($row['sold_out'] != 0) {
-            // echo "  (!! Sold Out !!)";
-    // }
-    //
-
     echo "</div>";
 
     echo '<div class="ingrediants">';
