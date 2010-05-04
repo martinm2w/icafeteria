@@ -74,7 +74,7 @@ else {
         $cost = money_format('$%n', $row['cost']);
 
         echo '<li>';
-        echo "<div class=\"title\">$row[count]x $row[item_name] <span class=\"cost\">@ $cost each</span></div>";
+        echo "<div class=\"title\">$row[count]x $row[item_name]</div>";
 
         echo '<div class="ingrediants">';
 
@@ -90,15 +90,6 @@ else {
         echo '</div>';
         echo '</li>';
     }
-
-    $subtotal_cost = money_format('$%n', $total_row['subtotal_cost']);
-    $total_tax = money_format('$%n', $total_row['total_tax']);
-    $total_cost_with_tax = money_format('$%n', $total_row['total_cost_with_tax']);
-
-    echo '<p>&nbsp;</p>';
-    echo "<p>Subtotal: $subtotal_cost</p>";
-    echo "<p>Tax (8.00%): $total_tax</p>";
-    echo "<h3>Total: $total_cost_with_tax</h3>";
 }
 ?>
     </body>

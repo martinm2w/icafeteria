@@ -7,8 +7,6 @@
 <?php
 switch ($_POST['action']) {
 case 'add':
-    // This is BAD!  We're not protecting against injection attacks.  We'll 
-    // fix it later
     mysql_query(<<<SQL
 INSERT
   INTO items( item_name,
@@ -50,7 +48,6 @@ SQL
     break;
 
 case 'delete':
-    // This is also BAD!
     mysql_query("delete from items where item_id = $_POST[item_id]", $db)
         or die('Delete failed: ' . mysql_error());
     echo "<p>Your item was removed from the menu.</p>";
