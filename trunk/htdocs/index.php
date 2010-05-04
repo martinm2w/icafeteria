@@ -6,6 +6,24 @@
 
 <ul class="menu">
 <?php
+$type_results = mysql_query(<<<SQL
+SELECT item_type_id,
+       item_type_name,
+       item_count
+  FROM       ( SELECT item_type_id,
+                      COUNT(*) AS item_count
+                 FROM       items
+                       JOIN item_types
+                      USING (item_type_id)
+                GROUP
+                   BY item_type_id
+             ) AS item_type_counts
+        JOIN item_types
+       USING (item_type_id)
+SQL
+    , $db)
+    or die('Select failed: ' . mysql_error());
+
 $results = mysql_query(<<<SQL
 SELECT items.*,
        item_type_name,
@@ -41,12 +59,29 @@ SQL
     , $db)
     or die('Select failed: ' . mysql_error());
 
-$prev_item_type_id = 0;
+echo '<p>';
+$first_type = TRUE;
+while (($type_row = mysql_fetch_assoc($type_results)) !== FALSE) {
+    if (!$first_type) {
+        echo ' | ';
+    }
+
+    echo "<a href=\"#$type_row[item_type_id]\">$type_row[item_type_name]</a>";
+
+    $first_type = FALSE;
+}
+echo '</p><p>&nbsp;</p>';
+
+$prev_item_type_id = -1;
 while (($row = mysql_fetch_assoc($results)) !== FALSE) {
     $cost = money_format('$%n', $row['cost']);
 
     if ($row['item_type_id'] != $prev_item_type_id) {
-        echo "<li><h2>$row[item_type_name]</h2></li>";
+        if ($prev_item_type_id != -1) {
+            echo '<p style="font-size: small;"><a href="#toolbar">Back to top</a></p>';
+        }
+
+        echo "<li><h2 id=\"$row[item_type_id]\">$row[item_type_name]</h2></li>";
         $prev_item_type_id = $row['item_type_id'];
     }
 
@@ -108,6 +143,7 @@ while (($row = mysql_fetch_assoc($results)) !== FALSE) {
     echo '</li>';
 }
 ?>
+            <p style="font-size: small;"><a href="#toolbar">Back to top</a></p>
 </ul>
 
 <?php include('../include/footer.php'); ?>
