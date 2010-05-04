@@ -82,10 +82,6 @@ echo "Logged in as $user_row[f_name] $user_row[l_name]";
             <ul id="main-nav">
                 <li><a href="/">Menu</a></li>
                 <li><a href="/about">About</a></li>
-<?php if(isset($_SESSION['username'])): ?>
-                <!-- <li><a href="/manage">Manage</a></li> -->
-<?php endif; ?>
-
 <?php
 if(isset($_SESSION['user_id'])):
     $user_result = mysql_query("SELECT * FROM users WHERE user_id=$_SESSION[user_id]", $db)
@@ -100,26 +96,6 @@ if(isset($_SESSION['user_id'])):
 <?php
     endif;
     if ($user_row['user_type_id'] == 2 || $user_row['user_type_id'] == 3) {
-        // We may turn this back on later. Shows an item count next to "Manage 
-        // Cart".
-        /*
-        $cart_results = mysql_query(<<<SQL
-SELECT SUM(count) as count
-  FROM       orders
-        JOIN orders_items
-       USING (order_id);
-SQL
-            , $db)
-            or die ('Select failed: ' . mysql_error());
-
-        $cart_row = mysql_fetch_assoc($cart_results);
-        $count = '';
-
-        if (!is_null($cart_row['count'])) {
-            $count = " ($cart_row[count])";
-        }
-         */
-
         echo "<li><a href=\"/manage/cart.php\">Manage Cart</a>$count</li>";
     }
 

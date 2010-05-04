@@ -3,8 +3,6 @@
 <?php
 switch ($_POST['action']) {
 case 'add':
-    // This is BAD!  We're not protecting against injection attacks.  We'll 
-    // fix it later
     $open_order_results = mysql_query(<<<SQL
 SELECT order_id
   FROM orders
@@ -60,7 +58,6 @@ SQL
     break;
 
 case 'delete':
-    // This is also BAD!
     mysql_query(<<<SQL
 DELETE
   FROM orders_items_ingreds
@@ -102,12 +99,6 @@ SQL
     break;
 
 case 'checkout':
-    /*
-    mysql_query("DELETE orders_items_ingreds.* FROM orders_items_ingreds JOIN orders USING (order_id) WHERE user_id = $_SESSION[user_id]", $db)
-        or die('Delete failed: ' . mysql_error());
-    mysql_query("DELETE orders_items.* FROM orders_items JOIN orders USING (order_id) WHERE user_id = $_SESSION[user_id]", $db)
-        or die('Delete failed: ' . mysql_error());
-     */
     $open_order_results = mysql_query(<<<SQL
 SELECT order_id
   FROM orders
